@@ -6,7 +6,7 @@ export const products = [
         description: 'This is the first product',
         brand: 'Brand 1',
         category: 'Category 1',
-        image: '/images/product1.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -16,7 +16,7 @@ export const products = [
         description: 'This is the second product',
         brand: 'Brand 2',
         category: 'Category 2',
-        image: '/images/product2.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -26,7 +26,7 @@ export const products = [
         description: 'This is the third product',
         brand: 'Brand 3',
         category: 'Category 3',
-        image: '/images/product3.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -36,7 +36,7 @@ export const products = [
         description: 'This is the fourth product',
         brand: 'Brand 4',
         category: 'Category 4',
-        image: '/images/product4.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -46,7 +46,7 @@ export const products = [
         description: 'This is the fifth product',
         brand: 'Brand 5',
         category: 'Category 5',
-        image: '/images/product5.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -56,7 +56,7 @@ export const products = [
         description: 'This is the sixth product',
         brand: 'Brand 6',
         category: 'Category 6',
-        image: '/images/product6.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -66,7 +66,7 @@ export const products = [
         description: 'This is the seventh product',
         brand: 'Brand 7',
         category: 'Category 7',
-        image: '/images/product7.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
@@ -76,16 +76,17 @@ export const products = [
         description: 'This is the eighth product',
         brand: 'Brand 8',
         category: 'Category 8',
-        image: '/images/product8.jpg',
+        image: '/ysk.png',
         rewiews: [],
     },
     {
         id: 9,
-        name: 'Product 9',
+        name: 'Product 9 Product 9 Product 9 Product 9',
         price: 900,
         description: 'This is the ninth product',
         brand: 'Brand 9',
         category: 'Category 9',
+        image: '/ysk.png',
     },
     {
         id: 10,
@@ -94,7 +95,7 @@ export const products = [
         description: 'This is the tenth product',
         brand: 'Brand 10',
         category: 'Category 10',
-        image: '/images/product10.jpg',
+        image: '/ysk.png',
         rewiews: [],
     }
 ]
