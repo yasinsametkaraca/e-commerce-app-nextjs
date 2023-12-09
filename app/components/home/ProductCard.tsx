@@ -1,14 +1,16 @@
+"use client"
 import React from 'react'
 import Image from "next/image";
 import {Rating} from "@mui/material";
 import {textClip} from "@/utils/TextClip";
+import {useRouter} from "next/navigation";
 
 const ProductCard = ({product}: {product: any}) => {
+    const router = useRouter()
 
-    let productRating = product?.rewiews?.reduce((acc: number, item: any) => acc + item.rating, 0) / product?.rewiews?.length
-
+    let productRating = product?.reviews?.reduce((acc: number, item: any) => acc + item.rating, 0) / product?.reviews?.length //  average of rating all comments
     return (
-        <div className="w-[260px] shadow-lg p-2 rounded-md cursor-pointer flex flex-col">
+        <div onClick={() => router.push(`/product/${product?.id}`)} className="w-[260px] shadow-lg p-2 rounded-md cursor-pointer flex flex-col">
             <div className="relative h-[150px]">
                 <Image src={product.image} alt={product.name} fill className="object-contain" />
             </div>
