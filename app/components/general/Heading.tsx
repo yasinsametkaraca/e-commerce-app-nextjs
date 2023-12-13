@@ -6,7 +6,7 @@ interface HeadingProps {
 }
 const Heading: React.FC<HeadingProps> = ({center, text}) => {
     return (
-        <div className={`text-slate-500 px-3 my-3 md:my-6 md:px-10 md:text-2xl ${center ? "text-center" : "text-start"}`}>{text}</div>
+        <div className={`text-slate-500 px-3 my-3 md:my-6 font-medium md:px-10 text-xl md:text-3xl ${center ? "text-center" : "text-start"}`}>{text}</div>
     )
 }
 export default Heading

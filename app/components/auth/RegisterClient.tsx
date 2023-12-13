@@ -6,9 +6,15 @@ import Button from "@/app/components/general/Button";
 import Input from "@/app/components/general/Input";
 import {useForm, SubmitHandler, FieldValues} from "react-hook-form";
 import { FaGoogle } from "react-icons/fa6";
+import Link from "next/link";
+import axios from "axios";
+import toast from "react-hot-toast";
+import {signIn} from "next-auth/react";
+import {useRouter} from "next/navigation";
 
 const RegisterClient = () => {
 
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -17,12 +23,30 @@ const RegisterClient = () => {
     } = useForm<FieldValues>()
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
+        axios.post("/api/register", data).then(res => {
+            toast.success("Registered successfully")
+            signIn("credentials", {
+                email: data.email,
+                password: data.password,
+                redirect: false
+            }).then((callback) => {
+                if (callback?.ok) {
+                    router.push("/")
+                    router.refresh()
+                    toast.success("Logged in successfully")
+                }
+                if (callback?.error) {
+                    toast.error(callback.error)
+                }
+            })
+        }).catch(err => {
+            toast.error("Error registering")
+        })
     }
 
     return (
         <AuthContainer>
-            <div className="w-full md:w-[500px] p-3 shadow-lg rounded-md">
+            <div className="w-full md:w-[470px] p-4 shadow-2xl hover:shadow-lg rounded-md">
                 <Heading text={"Register"} center/>
                 <Input id={"name"} placeholder={"Name"} type={"text"} register={register} errors={errors} required/>
                 <Input id={"email"} placeholder={"Email"} type={"email"} register={register} errors={errors} required/>
@@ -40,10 +64,13 @@ const RegisterClient = () => {
                         </a>
                     </div>
                 </div>
-                <Button text={"Register"}  style={"bg-orange-600 hover:bg-orange-500 my-2"} onClick={() => handleSubmit(onSubmit)}/>
-
-                <div className="my-3">Or</div>
+                <Button text={"Register"}  style={"hover:bg-gray-900 my-2"} onClick={handleSubmit(onSubmit)}/>
+                <div className="my-3 text-center font-medium text-slate-500">Or</div>
                 <Button text={"Register with Google"} outline icon={FaGoogle} onClick={() => {}}/>
+                <div className="text-center text-sm text-slate-500 mt-3">
+                    Do you have an account?
+                    <Link className="text-sm text-red-500" href={"/login"}> Sign In</Link>
+                </div>
             </div>
         </AuthContainer>
     )

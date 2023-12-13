@@ -20,8 +20,8 @@ const Input: React.FC<Props> = ({id,placeholder,type,disabled,required,register,
             type={type}
             placeholder={placeholder}
             disabled={disabled}
-            {...register(id, {required})}
-            className={`${errors[id] ? "border-red-500 outline-red-500" : "border-slate-200"} my-3 outline-1 hover:outline h-12 block w-full px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+            {...register (id, {required})}
+            className={`${errors[id] ? "border-red-500 outline-red-500" : "border-slate-200"} my-4 outline-1 hover:outline h-12 block w-full px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
         />
     )
 }

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Button from "@/app/components/general/Button";
 import {CartProductProps} from "@/app/components/product/ProductDetailClient";
 import Counter from "@/app/components/general/Counter";
+import { CiCircleRemove } from "react-icons/ci";
 
 const CartClient = () => {
     const {cartProducts, increaseQuantity, decreaseQuantity, deleteProductFromCart, removeAllCart} = useCart()
@@ -37,7 +38,7 @@ const CartClient = () => {
                                 <Counter cartProduct={product} increaseFunc={() => increaseQuantity(product)} decreaseFunc={() => decreaseQuantity(product)} />
                             </div>
                             <div className="w-1/5">
-                                <Button style={"bg-red-600 hover:bg-red-500 p-0 m-0"} text="Remove" small onClick={() => deleteProductFromCart(product.id)}/>
+                                <CiCircleRemove size={32} className="cursor-pointer" onClick={() => deleteProductFromCart(product.id)}/>
                             </div>
                         </div>
                     ))

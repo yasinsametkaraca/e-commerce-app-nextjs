@@ -8,15 +8,14 @@ const Logo = () => {
 
     return (
         <>
-            <Link href="/">
-                <Image
-                    className="cursor-pointer"
-                    src="/ysk.png"
-                    alt="ysk logo"
-                    width={75}
-                    height={50}
-                />
-            </Link>
+            <Image
+                onClick={() => router.push("/")}
+                className="cursor-pointer"
+                src="/ysk.png"
+                alt="ysk logo"
+                width={75}
+                height={50}
+            />
         </>
     )
 }
