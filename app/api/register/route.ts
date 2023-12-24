@@ -13,6 +13,11 @@ export async function POST(request: Request) {
             name,
         }
     })
-    return NextResponse.json(user)
+    const responseUser = {
+        ...user,
+        hashedPassword: undefined
+    };
+
+    return NextResponse.json({ user: responseUser });
 }
 
