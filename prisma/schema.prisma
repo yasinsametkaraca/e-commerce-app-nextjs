@@ -37,6 +37,38 @@ model User {
   updatedAt     DateTime  @updatedAt
   role          Role      @default(USER)
   accounts      Account[]
+  reviews       Review[]
+  products      Product[]
+}
+
+model Product {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float
+  brand       String?
+  category    String?
+  image       String?
+  inStock     Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  reviews     Review[]
+  userId      String    @db.ObjectId
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  productId String    @db.ObjectId
+  userId    String    @db.ObjectId
+  rating    Int
+  comment   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Role {

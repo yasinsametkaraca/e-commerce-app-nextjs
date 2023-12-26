@@ -1,8 +1,12 @@
 import LoginClient from "@/app/components/auth/LoginClient";
+import {getCurrentUser} from "@/app/actions/getCurrentUser";
 
-const Page = () => {
+const Page = async () => {
+
+    const currentUser = await getCurrentUser()
+
     return (
-        <LoginClient />
+        <LoginClient currentUser={currentUser} />
     )
 }
 export default Page

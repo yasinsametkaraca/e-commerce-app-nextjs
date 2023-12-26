@@ -10,8 +10,14 @@ import Link from "next/link";
 import {signIn} from "next-auth/react";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
+import {User} from "@prisma/client";
+import React, {useEffect} from "react";
 
-const LoginClient = () => {
+interface LoginClientProps {
+    currentUser: User | null | undefined
+}
+
+const LoginClient:React.FC<LoginClientProps> = ({currentUser}) => {
 
     const router = useRouter()
     const {
@@ -37,6 +43,13 @@ const LoginClient = () => {
         })
     }
 
+    useEffect(() => {
+        if (currentUser) {
+            router.push("/cart")
+            router.refresh()
+        }
+    }, [])
+
     return (
         <AuthContainer>
             <div className="w-full md:w-[470px] p-3 shadow-2xl hover:shadow-lg rounded-md">
@@ -58,7 +71,7 @@ const LoginClient = () => {
                 </div>
                 <Button text={"Login"}  style={"hover:bg-gray-900 my-2"} onClick={handleSubmit(onSubmit)}/>
                 <div className="my-3 text-center font-medium text-slate-500">Or</div>
-                <Button text={"Login with Google"} outline icon={FaGoogle} onClick={() => {}}/>
+                <Button text={"Login with Google"} outline icon={FaGoogle} onClick={() => signIn('google')}/>
                 <div className="text-center text-sm text-slate-500 mt-3">
                     Don't have an account?
                     <Link className="text-sm text-red-500" href={"/register"}> Sign Up</Link>

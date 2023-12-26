@@ -8,6 +8,7 @@ import {getCurrentUser} from "@/app/actions/getCurrentUser";
 const Navbar = async () => {
 
     const currentUser = await getCurrentUser()
+
     return (
         <div className='flex items-center justify-between gap-3 md:gap-10 px-2 md:px-8 h-16 bg-orange-500 text-slate-100'>
             <Logo></Logo>
