@@ -1,21 +1,26 @@
 "use client"
 import Heading from "@/app/components/general/Heading";
 import Input from "@/app/components/general/Input";
-import React from "react";
+import React, {useState} from "react";
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import Checkbox from "@/app/components/general/Checkbox";
-import { TiThSmall } from "react-icons/ti";
 import { GrTechnology } from "react-icons/gr";
 import { FaLanguage } from "react-icons/fa";
 import { BiMath } from "react-icons/bi";
 import { MdOutlineScience } from "react-icons/md";
 import { MdHistoryEdu } from "react-icons/md";
 import ChoiceInput from "@/app/components/general/ChoiceInput";
+import Button from "@/app/components/general/Button";
+import toast from "react-hot-toast";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import firebaseApp from "@/libs/firebase";
+
 
 const CreateForm = () => {
 
+    const [image, setImage] = useState<File | null>(null)
+    const [uploadedImg, setUploadedImg] = useState<string | null>(null)
     const categoryList = [
-        { name: "All", id: 1, icon: TiThSmall},
         { name: "Technology", id: 2, icon: GrTechnology},
         { name: "Science", id: 3, icon: MdOutlineScience },
         { name: "Mathematics", id: 4, icon: BiMath },
@@ -54,8 +59,59 @@ const CreateForm = () => {
         })
     }
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const handleImage = async () => {
+            try {
+                const storage = getStorage(firebaseApp);
+                const storageRef = ref(storage, 'images/shop.jpg');  // be dynamic
+
+                const uploadTask = uploadBytesResumable(storageRef, image);
+                await new Promise<void>((resolve, reject) => {
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            // Observe state change events such as progress, pause, and resume
+                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            console.log('Upload is ' + progress + '% done');
+                            switch (snapshot.state) {
+                                case 'paused':
+                                    console.log('Upload is paused');
+                                    break;
+                                case 'running':
+                                    console.log('Upload is running');
+                                    break;
+                            }
+                        },
+                        (error) => {
+                            reject(error)
+                            // Handle unsuccessful uploads
+                        },
+                        () => {
+                            // Handle successful uploads on complete
+                            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                                console.log('File available at', downloadURL);
+                                toast.success("Image uploaded successfully")
+                                setUploadedImg(downloadURL)
+                                resolve()
+                            })
+                        }
+                    );
+                })
+            } catch (error) {
+                toast.error(error)
+            }
+        }
+        await handleImage()
+        let newData = {...data, image: uploadedImg}
+        console.log(uploadedImg)
+        console.log("newData", newData)
+    }
+
+    const changeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0]
+            setImage(file)}
     }
 
     return (
@@ -64,21 +120,22 @@ const CreateForm = () => {
             <Input id={"name"} placeholder={"Name"} type={"text"} register={register} errors={errors} required/>
             <Input id={"description"} placeholder={"Description"} type={"text"} register={register} errors={errors} required/>
             <Input id={"price"} placeholder={"Price"} type={"number"} register={register} errors={errors} required/>
-            <Input id={"image"} placeholder={"Image"} type={"text"} register={register} errors={errors} required/>
             <Input id={"brand"} placeholder={"Brand"} type={"text"} register={register} errors={errors} required/>
             <Checkbox id={"inStock"} label={"In Stock"} register={register}/>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 my-2">
                 {
-                    categoryList.map((category) => (
-                        <ChoiceInput icon={category.icon}
-                                     key={category.id}
-                                     selected={watch("category") === category.name}
-                                     onClick={(category) => setCustomValue("category", category)}
-                                     value={category.name}/>
+                    categoryList.map((category, index) => (
+                        <ChoiceInput
+                            icon={category.icon}
+                            key={index}
+                            selected={watch("category") === category.name}
+                            onClick={(category) => setCustomValue("category", category)}
+                            value={category.name}/>
                     ))
                 }
             </div>
-            <button onClick={handleSubmit(onSubmit)} className="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded mt-4">Create</button>
+            <input className="mb-2" type="file" onChange={changeImage} />
+            <Button text={"Create Product"} onClick={handleSubmit(onSubmit)} small={true}></Button>
 
         </div>
     )

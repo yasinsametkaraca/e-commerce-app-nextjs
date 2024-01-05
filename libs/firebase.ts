@@ -8,7 +8,7 @@ import { getAnalytics } from "firebase/analytics";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY as string,
+    apiKey: toString(process.env.FIREBASE_API_KEY),
     authDomain: "e-commerce-app-next.firebaseapp.com",
     projectId: "e-commerce-app-next",
     storageBucket: "e-commerce-app-next.appspot.com",

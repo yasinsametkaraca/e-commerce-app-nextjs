@@ -28,7 +28,7 @@ const AdminSidebar = () => {
     ]
 
     return (
-        <div className="h-screen p-4 bg-orange-50">
+        <div className="sm:w-1/5 border-r h-screen p-4 bg-orange-50">
             <div className="space-y-4">
                 {
                     adminPanel.map((admin, index) => (
