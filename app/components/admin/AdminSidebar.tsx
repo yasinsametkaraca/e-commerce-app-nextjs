@@ -21,6 +21,11 @@ const AdminSidebar = () => {
             icon: MdProductionQuantityLimits
         },
         {
+            name: "Manage Product",
+            url: "/admin/manage",
+            icon: MdProductionQuantityLimits
+        },
+        {
             name: "Orders",
             url: "/admin/orders",
             icon: BiPurchaseTag

@@ -14,12 +14,14 @@ import Button from "@/app/components/general/Button";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import firebaseApp from "@/libs/firebase";
+import axios from "axios";
+import {useRouter} from "next/navigation";
 
 
 const CreateForm = () => {
 
+    const router = useRouter()
     const [image, setImage] = useState<File | null>(null)
-    const [uploadedImg, setUploadedImg] = useState<string | null>(null)
     const categoryList = [
         { name: "Technology", id: 2, icon: GrTechnology},
         { name: "Science", id: 3, icon: MdOutlineScience },
@@ -60,6 +62,8 @@ const CreateForm = () => {
     }
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        let uploadedImg;
+
         const handleImage = async () => {
             try {
                 const storage = getStorage(firebaseApp);
@@ -92,19 +96,27 @@ const CreateForm = () => {
                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                 console.log('File available at', downloadURL);
                                 toast.success("Image uploaded successfully")
-                                setUploadedImg(downloadURL)
+                                uploadedImg = downloadURL;
                                 resolve()
                             })
                         }
                     );
                 })
-            } catch (error) {
+            } catch (error: any) {
                 toast.error(error)
             }
         }
         await handleImage()
         let newData = {...data, image: uploadedImg}
-        console.log(uploadedImg)
+
+        axios.post('/api/product', newData)
+            .then((res) => {
+                toast.success("Product created successfully")
+                router.refresh()
+            }).catch((err) => {
+                console.log(err)
+            })
+
         console.log("newData", newData)
     }
 
